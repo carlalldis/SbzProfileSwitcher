@@ -1,0 +1,105 @@
+{
+  "DefaultProfile": 0,                              // null, or the profile index (starting at 0) to set when the tray icon starts
+  "Profiles": [
+    {
+      "ProfileName": "Speakers",                    // Display Name in context menu
+      "OutputDevice": "Speakers (Sound Blaster Z)", // See options menu for a list of devices
+      "SpeakerMode": "5.1",							// "5.1", "Stereo", or "Headphones"
+      "Volume": 20,									// decimal between 0-100
+      "Options": {
+        "SurroundEnable": false,					// false or true			// controls surround in sbx pro studio
+        "SurroundAmount": null,						// decimal between 0-100
+        "CrystalEnable": true,						// false or true			// controls crystalizer in sbx pro studio
+        "CrystalAmount": 65,						// decimal between 0-100
+        "BassEnable": false,						// false or true			// controls bass in sbx pro studio
+        "BassFreq": null,							// integer between 10-1000
+        "BassAmount": null,							// decimal between 0-100
+        "SmartVolumeEnable": false,					// false or true			// controls smart volume in sbx pro studio
+        "SmartVolumeMode": null,					// 0 = Normal, 1 = Loud, 2 = Night
+        "SmartVolumeAmount": null,					// decimal between 0-100
+        "DialogPlusEnable": false,					// false or true			// controls dialog plus in sbx pro studio
+        "DialogPlusAmount": null,					// decimal between 0-100
+        "BassRedirEnable": true,					// false or true			// controls bass redirection for speakers
+        "BassRedirFreq": 80,						// integer between 10-1000
+        "BassRedirBoostEnable": false,				// false or true			// controls surround in sbx pro studio
+        "EqualizerEnable": false,					// false or true			// controls equalizer in sbx pro studio
+        "EqualizerProfile": null					// integer, custom saved profiles start at 11
+      }
+    },
+    {
+      "ProfileName": "Headphones",
+      "OutputDevice": "Speakers (Sound Blaster Z)",
+      "SpeakerMode": "Headphones",
+      "Volume": 10,
+      "Options": {
+        "SurroundEnable": false,
+        "SurroundAmount": null,
+        "CrystalEnable": true,
+        "CrystalAmount": 65,
+        "BassEnable": false,
+        "BassFreq": null,
+        "BassAmount": null,
+        "SmartVolumeEnable": false,
+        "SmartVolumeMode": null,
+        "SmartVolumeAmount": null,
+        "DialogPlusEnable": false,
+        "DialogPlusAmount": null,
+        "BassRedirEnable": false,
+        "BassRedirFreq": null,
+        "BassRedirBoostEnable": false,
+        "EqualizerEnable": true,
+        "EqualizerProfile": 11
+      }
+    },
+    {
+      "ProfileName": "Headphones (Surround)",
+      "OutputDevice": "Speakers (Sound Blaster Z)",
+      "SpeakerMode": "Headphones",
+      "Volume": 10,
+      "Options": {
+        "SurroundEnable": true,
+        "SurroundAmount": 100,
+        "CrystalEnable": true,
+        "CrystalAmount": 65,
+        "BassEnable": false,
+        "BassFreq": null,
+        "BassAmount": null,
+        "SmartVolumeEnable": false,
+        "SmartVolumeMode": null,
+        "SmartVolumeAmount": null,
+        "DialogPlusEnable": false,
+        "DialogPlusAmount": null,
+        "BassRedirEnable": false,
+        "BassRedirFreq": null,
+        "BassRedirBoostEnable": false,
+        "EqualizerEnable": true,
+        "EqualizerProfile": 11
+      }
+    },
+    {
+      "ProfileName": "TV",
+      "OutputDevice": "TOSHIBA-TV (NVIDIA High Definition Audio)",
+      "SpeakerMode": null,
+      "Volume": 100,
+      "Options": {
+        "SurroundEnable": null,
+        "SurroundAmount": null,
+        "CrystalEnable": null,
+        "CrystalAmount": null,
+        "BassEnable": null,
+        "BassFreq": null,
+        "BassAmount": null,
+        "SmartVolumeEnable": null,
+        "SmartVolumeMode": null,
+        "SmartVolumeAmount": null,
+        "DialogPlusEnable": null,
+        "DialogPlusAmount": null,
+        "BassRedirEnable": null,
+        "BassRedirFreq": null,
+        "BassRedirBoostEnable": null,
+        "EqualizerEnable": null,
+        "EqualizerProfile": null
+      }
+    }
+  ]
+}
