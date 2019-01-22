@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CTSoundCore;
 using Malcolm;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace SbzProfileSwitcherCli
 {
@@ -16,9 +15,10 @@ namespace SbzProfileSwitcherCli
         private Config config;
         public string ConfigPath { get; set; }
 
-        public SwitcherLib(string configPath, bool useDefault)
+        public SwitcherLib(string configFile, bool useDefault)
         {
-            ConfigPath = configPath;
+            string exeDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            ConfigPath = Path.Combine(exeDir, configFile);
             LoadConfig();
             malCtrl = getAndInitMalcolmControl();
             if (config.DefaultProfile != null && useDefault)

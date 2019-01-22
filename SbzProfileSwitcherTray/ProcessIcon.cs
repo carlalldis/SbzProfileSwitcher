@@ -14,7 +14,14 @@ namespace SbzProfileSwitcherTray
         public ProcessIcon()
         {
             ni = new NotifyIcon();
-            switcherLib = new SwitcherLib("SbzProfileSwitcher.json", true);
+            try
+            {
+                switcherLib = new SwitcherLib("SbzProfileSwitcher.json", true);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error connecting to SBZ Control Panel: " + ex.Message);
+            }
         }
 
         public void Display()
