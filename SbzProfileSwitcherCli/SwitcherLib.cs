@@ -52,13 +52,12 @@ namespace SbzProfileSwitcherCli
             return config.Profiles.Select(i => i.ProfileName).ToArray();
         }
 
-        public void SetProfile(int profileIdx)
+        private void SetProfileOptions(Profile profile)
         {
-            Profile profile = config.Profiles[profileIdx];
 
             Func<MalcolmControlID, Object, Tuple<MalcolmControlID, Object>> tc = Tuple.Create;
 
-            var optionsBool = new List<Tuple<MalcolmControlID,Object>>
+            var optionsBool = new List<Tuple<MalcolmControlID, Object>>
             {
                 tc(MalcolmControlID.THXSurroundEnable,      profile.Options.SurroundEnable),
                 tc(MalcolmControlID.THXCrystalEnable,       profile.Options.CrystalEnable),
@@ -105,7 +104,7 @@ namespace SbzProfileSwitcherCli
                 }
             }
 
-            foreach (var option in optionsFloat)
+            foreach (var option in optionsInt)
             {
                 if (option.Item2 != null)
                 {
@@ -113,6 +112,14 @@ namespace SbzProfileSwitcherCli
                     malCtrl.SetParamInt(option.Item1, optionVal);
                 }
             }
+        }
+
+        public void SetProfile(int profileIdx)
+        {
+            Profile profile = config.Profiles[profileIdx];
+
+            // Set options before switch
+            SetProfileOptions(profile);
 
             // Set Audio Device
             SetDefaultAudioDevice(profile.OutputDevice);
@@ -123,11 +130,6 @@ namespace SbzProfileSwitcherCli
                 float volume = float.Parse(profile.Volume.ToString());
                 SetAudioLevel.SetVolume(volume);
             }
-
-            // Set Jack Mode (Speakers or Headphones) // No longer required with Set Speaker Mode
-            //if      (profile.JackMode == "Speakers")  { setNewOutType(malCtrl, MultiplexOutTypes.Speaker); }
-            //else if (profile.JackMode == "Headphones") { setNewOutType(malCtrl, MultiplexOutTypes.Headphones); }
-            //else { throw new Exception("A value other than Speakers or Headphones for JackMode was specified"); }
 
             // Set Speaker Mode
             // Speaker Mode: 0 = 5.1, 1 = Stereo, 2 = Headphones, 3 = Stereo Direct (Causes startup failure for switcher if left on this mode)
@@ -141,6 +143,11 @@ namespace SbzProfileSwitcherCli
                     case "5.1":
                         selectedSpeakerMask = ASpkConfigList[0].speakerMask;
                         break;
+                    case "2.1":
+                        selectedSpeakerMask = ASpkConfigList[0].speakerMask;
+                        malCtrl.SetParamInt(MalcolmControlID.SpkConfig, selectedSpeakerMask);
+                        selectedSpeakerMask = 208907;
+                        break;
                     case "Stereo":
                         selectedSpeakerMask = ASpkConfigList[1].speakerMask;
                         break;
@@ -148,77 +155,13 @@ namespace SbzProfileSwitcherCli
                         selectedSpeakerMask = ASpkConfigList[2].speakerMask;
                         break;
                     default:
-                        throw new Exception("A value other than 5.1, Stereo, or Headphones for SpeakerMode was specified");
+                        throw new Exception("A value other than 5.1, 2.1, Stereo, or Headphones for SpeakerMode was specified");
                 }
                 malCtrl.SetParamInt(MalcolmControlID.SpkConfig, selectedSpeakerMask);
             }
 
-            /*
-            // Virtual Surround
-
-            if (profile.Options.SurroundEnable != null)
-            {
-                bool surroundEnable = bool.Parse(profile.Options.SurroundEnable.ToString());
-                malCtrl.SetParamBool(MalcolmControlID.THXSurroundEnable, surroundEnable);
-            }
-
-            if (profile.Options.SurroundAmount != null)
-            {
-                float surroundAmount = float.Parse(profile.Options.SurroundAmount.ToString()) / 100;
-                malCtrl.SetParamFloat(MalcolmControlID.THXSurroundValue, surroundAmount);
-            }
-
-            // Crystalizer
-
-            if (profile.Options.CrystalEnable != null)
-            {
-                bool crystalEnable = bool.Parse(profile.Options.CrystalEnable.ToString());
-                malCtrl.SetParamBool(MalcolmControlID.THXCrystalEnable, crystalEnable);
-            }
-
-            if (profile.Options.CrystalAmount != null)
-            {
-                float crystalAmount = float.Parse(profile.Options.CrystalAmount.ToString()) / 100;
-                malCtrl.SetParamFloat(MalcolmControlID.THXCrystalValue, crystalAmount);
-            }
-
-
-            // Surround, bool / float
-            malCtrl.SetParamBool(MalcolmControlID.THXSurroundEnable, true);
-            malCtrl.SetParamFloat(MalcolmControlID.THXSurroundValue, 0.3f);
-
-            // Crystalizer
-            malCtrl.SetParamBool(MalcolmControlID.THXCrystalEnable, true);
-            malCtrl.SetParamFloat(MalcolmControlID.THXCrystalValue, 0.9f);
-
-            // Bass
-            malCtrl.SetParamBool(MalcolmControlID.THXBassEnable, true);
-            malCtrl.SetParamFloat(MalcolmControlID.THXBassFreqValue, 300);
-            malCtrl.SetParamFloat(MalcolmControlID.THXBassValue, 0.75f);
-
-            // Smart Volume
-            malCtrl.SetParamBool(MalcolmControlID.THXSmrtVolEnable, true);
-            malCtrl.SetParamInt(MalcolmControlID.THXSmrtVolMode, 2);
-            malCtrl.SetParamFloat(MalcolmControlID.THXSmrtVolValue, 0.75f);
-
-            // Dialog Plus
-            malCtrl.SetParamBool(MalcolmControlID.THXDlgPlusEnable, true);
-            malCtrl.SetParamFloat(MalcolmControlID.THXDlgPlusValue, 0.75f);
-
-
-
-            // Speaker Bass Redirection
-            malCtrl.SetParamBool(MalcolmControlID.SpkSwfMgtEnable, true);
-            malCtrl.SetParamFloat(MalcolmControlID.SpkSwfMgtFreqValue, 120);
-            malCtrl.SetParamBool(MalcolmControlID.SpkSwfBoostEnable, true);
-
-            // Equalizer
-            malCtrl.SetParamBool(MalcolmControlID.EqualizerEnable, true);
-            malCtrl.SetParamInt(MalcolmControlID.EqualizerActivePreset, 11);
-
-            // Default Audio Device
-            SetDefaultAudioDevice("Speakers (Sound Blaster Z)");
-            */
+            // Set options again after a short delay after switch - some options cannot be applied before such as Bass Redirection
+            SetProfileOptions(profile);
         }
 
         private static MalcolmControl getAndInitMalcolmControl()

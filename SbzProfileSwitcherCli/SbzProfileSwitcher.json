@@ -4,7 +4,7 @@
     {
       "ProfileName": "Speakers",                    // Display Name in context menu
       "OutputDevice": "Speakers (Sound Blaster Z)", // See options menu for a list of devices
-      "SpeakerMode": "5.1",							// "5.1", "Stereo", or "Headphones"
+      "SpeakerMode": "2.1",							// "5.1", "Stereo", or "Headphones"
       "Volume": 20,									// decimal between 0-100
       "Options": {
         "SurroundEnable": false,					// false or true			// controls surround in sbx pro studio
